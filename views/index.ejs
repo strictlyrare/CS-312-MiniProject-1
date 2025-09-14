@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+<div class="row g-4">
+  <div class="col-12 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Create a Post</h5>
+        <form method="POST" action="/posts" class="vstack gap-3">
+          <div>
+            <label class="form-label">Author</label>
+            <input name="author" class="form-control" placeholder="Your name" required />
+          </div>
+          <div>
+            <label class="form-label">Title</label>
+            <input name="title" class="form-control" placeholder="Post title" required />
+          </div>
+          <div>
+            <label class="form-label">Category</label>
+            <select name="category" class="form-select">
+              <option value="Tech">Tech</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Education">Education</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Content</label>
+            <textarea name="content" class="form-control" rows="6" placeholder="Write your post..." required></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Publish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-7">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <h4 class="mb-0">Posts</h4>
+      <form method="GET" action="/" class="d-flex align-items-center gap-2">
+        <label class="form-label mb-0 me-2">Filter:</label>
+        <select name="category" class="form-select" onchange="this.form.submit()">
+          <option <%= selectedCategory==='All' ? 'selected' : '' %>>All</option>
+          <% for (const c of categories) { %>
+            <option value="<%= c %>" <%= selectedCategory===c ? 'selected' : '' %>><%= c %></option>
+          <% } %>
+        </select>
+        <noscript><button class="btn btn-secondary">Apply</button></noscript>
+      </form>
+    </div>
+
+    <% if (posts.length === 0) { %>
+      <div class="alert alert-info">No posts yet. Create one!</div>
+    <% } %>
+
+    <div class="vstack gap-3">
+      <% posts.forEach(p => { %>
+        <%- include('partials/postCard', { p, formatDate }) %>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
